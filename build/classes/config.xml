@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ce325-server>
+  <listen port="8000" />
+  <statistics port="8001" />
+  <log>
+    <access filepath="/path/to/access/log.txt" />
+    <error filepath="/path/to/error/log.txt" />
+  </log>
+  <document-root filepath="/path/to/document-root/" />
+  <run-php>yes</run-php>
+  <deny-access>
+    <ip>52.8.64.0/24</ip>
+    <ip>128.44.0.0/16</ip>
+  </deny-access>
+</ce325-server>

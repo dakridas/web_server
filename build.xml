@@ -1,0 +1,20 @@
+<project>
+    <target name="clean">
+        <delete dir="build"/>
+        <mkdir dir="build"/>
+    </target>
+
+    <target name="build">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes"/>
+    </target>
+
+    <target name="jar" depends="build">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/ce325-web-server.jar" basedir="build/classes" includes="gr/uth/inf/ce325/xml_parser/**">
+        </jar>
+    </target>
+
+    <target name="all" depends="jar"/>
+
+</project>
