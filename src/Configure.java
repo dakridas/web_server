@@ -18,9 +18,7 @@ public class Configure {
     public Configure(String path) {
         db = new DocumentBuilder();
         document = db.getDocument(path);
-        System.out.println(document.toXMLString());
         Node root = document.getRootNode();
-        System.out.println(root.getName());
         List <Node> nodes = root.getChildren();
         List <Node> childs;
         // for root's childs takes the values of attributes
@@ -28,11 +26,9 @@ public class Configure {
             switch (curr.getName()) {
                 case "listen":
                     listenPort = (curr.getFirstAttribute()).getValue();
-                    System.out.println(listenPort);
                     break;
                 case "statistics":
                     statisticsPort = (curr.getFirstAttribute()).getValue();
-                    System.out.println(statisticsPort);
                     break;
                 case "log":
                     childs = curr.getChildren();
@@ -40,27 +36,24 @@ public class Configure {
                         switch (child.getName()) {
                             case "access" :
                                 accessPath = (child.getFirstAttribute()).getValue();
-                                System.out.println(accessPath);
                                 break;
                             case "error" :
                                 errorPath = (child.getFirstAttribute()).getValue();
-                                System.out.println(errorPath);
                                 break;
                         }
                     }
                     break;
                 case "documentroot":
                     rootPath = (curr.getFirstAttribute()).getValue();
-                    System.out.println(rootPath);
                     break;
             }
         }
     }
-    public String getlistenPort() {
-        return listenPort;
+    public Integer getlistenPort() {
+        return Integer.parseInt(listenPort);
     }
-    public String getstatisticsPort() {
-        return statisticsPort;
+    public Integer getstatisticsPort() {
+        return Integer.parseInt(statisticsPort);
     }
     public String getaccessPath() {
         return accessPath;
@@ -71,9 +64,4 @@ public class Configure {
     public String getrootPath() {
         return rootPath;
     }
-    public static void main(String[] args) {
-        Configure test = new Configure("config.xml");
-    }
-
-
 }

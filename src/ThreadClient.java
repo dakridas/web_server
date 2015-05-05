@@ -16,13 +16,17 @@ public class ThreadClient implements Runnable {
                 new InputStreamReader(csocket.getInputStream()));
             System.out.println("Connected to " + csocket.getInetAddress().toString()
                     +":"+csocket.getPort());
+            DataOutputStream writeOut = new DataOutputStream(csocket.getOutputStream());
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                System.out.println("echoing: "+inputLine);
-                System.out.println("?");
+                if (inputLine.startsWith("GET")) {
+                   System.out.println("GET");
+                }else if ((inputline.startsWith("Connection"))) {
+                    System.out.println("Connection");
+                }else {
+                    continue;
+                }
             }
-            System.out.println("#");
         } catch (IOException e) {}
 
     }
