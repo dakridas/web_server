@@ -21,7 +21,7 @@ public class ThreadClient implements Runnable {
             while ((inputLine = in.readLine()) != null) {
                 if (inputLine.startsWith("GET")) {
                    System.out.println("GET");
-                }else if ((inputline.startsWith("Connection"))) {
+                }else if (inputLine.startsWith("Connection")) {
                     System.out.println("Connection");
                 }else {
                     continue;
