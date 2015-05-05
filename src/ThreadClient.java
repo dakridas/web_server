@@ -4,8 +4,10 @@ import java.io.*;
 public class ThreadClient implements Runnable {
 
     private Socket csocket;
+    private String pathFile;
+    private String httpVersion;
 
-    public ThreadClient(Socket csocket) {
+    public ThreadClient(Socket csocket,String accessPath,String errorPath) {
         this.csocket = csocket;
     }
 
@@ -18,13 +20,31 @@ public class ThreadClient implements Runnable {
                     +":"+csocket.getPort());
             DataOutputStream writeOut = new DataOutputStream(csocket.getOutputStream());
             String inputLine;
+            // Get method
+            inputLine = in.readLine();
+            if (inputLine.startsWith("GET")) {
+                // take parametres of GET
+                String parametres [] = inputLine.split("\\s");
+                pathFile = parametres[1];
+                //TODO if has less than 2 parametres
+                httpVersion = parametres[2];
+                // create responce string here
+            // 405 fail
+            }else {
+                System.out.println("?");
+                writeOut.writeBytes("405 Method Not Allowed");
+                writeOut.flush();
+                writeOut.close();
+                csocket.close();
+            }
+
+            // wait for header connection and close
             while ((inputLine = in.readLine()) != null) {
-                if (inputLine.startsWith("GET")) {
-                   System.out.println("GET");
-                }else if ((inputline.startsWith("Connection"))) {
-                    System.out.println("Connection");
-                }else {
-                    continue;
+                if (inputLine.startsWith("Connection")) {
+                    // send responce string
+                    writeOut.flush();
+                    writeOut.close();
+                    csocket.close();
                 }
             }
         } catch (IOException e) {}
