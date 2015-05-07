@@ -1,6 +1,6 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.text.*;
 
 public class ServerResponse {
 
@@ -10,6 +10,7 @@ public class ServerResponse {
 
     public ServerResponse(String pathFile,String httpVersion) {
         readMimeFile(pathFile);
+        readCurrentDate();
     }
 
     public String getRespose() {
@@ -30,6 +31,12 @@ public class ServerResponse {
         }
     }
 
+    private void readCurrentDate() {
+        Date dnow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("E',' dd MMMM yyyy hh:mm:ss 'GMT' ");
+        ft.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String date = ft.format(dnow);
+    }
     public static void main(String[] args) {
         ServerResponse a = new ServerResponse(" "," ");
     }
