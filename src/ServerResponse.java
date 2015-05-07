@@ -8,27 +8,70 @@ public class ServerResponse {
     private String requestFile;
     private BufferedReader in;
     private Map<String,String> dictionary;
-    private String Date = "Date: ";
-    private String LastModified = "Last-Modified: ";
-    private String ContentLength = "Content-Length: ";
-    private String Connection = "Connection: ";
-    private String ContentType = "Content-Type: ";
+    private String ok = " 200 OK";
+    private String date = "Date: ";
+    private String server = "Server: CE325 (Java based server)";
+    private String lastModified = "Last-Modified: ";
+    private String contentLength = "Content-Length: ";
+    private String connection = "Connection: close";
+    private String contentType = "Content-Type: ";
+    private SimpleDateFormat ft;
 
     public ServerResponse(String pathFile,String httpVersion) {
+        ok = httpVersion + ok;
+        readCurrentDate();
         readMimeFile();
+        getContentType(pathFile);
         readRequestFile(pathFile);
         createRespose();
     }
 
-    public String getResponse() {
-        return response;
+    public String getOk() {
+        return ok;
+    }
+    public String getDate() {
+        return date;
+    }
+    public String getServer() {
+        return server;
+    }
+    public String getLastModified() {
+        return lastModified;
+    }
+    public String getContentLength() {
+        return contentLength;
+    }
+    public String getConnection() {
+        return connection;
+    }
+    public String getContentType() {
+        return contentType;
+    }
+    public String getRequestFile() {
+        return requestFile;
     }
 
     private void createRespose() {
-
-
+        response = ok + date + server + lastModified + contentLength + connection + contentType;
+        response = response + " " + requestFile;
     }
-
+    // get content type
+    private void getContentType(String pathFile) {
+        String extension = "";
+        int i = pathFile.lastIndexOf('.');
+        if (i > 0) {
+                extension = pathFile.substring(i+1);
+        }
+        contentType = contentType + dictionary.get(extension);
+    }
+    // read current date
+    private void readCurrentDate() {
+        ft = new SimpleDateFormat("E',' dd MMMM yyyy hh:mm:ss 'GMT' ");
+        ft.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date dnow = new Date();
+        date = date + ft.format(dnow);
+    }
+    // read mime types to a dictionary
     private void readMimeFile() {
         dictionary = new HashMap<String,String>();
         try {
@@ -42,33 +85,28 @@ public class ServerResponse {
             System.out.println("File not found at " +  "MIME.txt");
         }
     }
-
+    // Read request file and last modified date
     private void readRequestFile(String pathFile) {
         StringBuilder everything = new StringBuilder();
         String line;
         File file = new File(pathFile);
-        LastModified = LastModified + file.lastModified();
-        System.out.println(LastModified);
-
+        //contentLength = contentLength + String.valueOf(file.length());
+        lastModified = lastModified + ft.format(file.lastModified());
         try {
             in = new BufferedReader(new FileReader(file));
             while ((line = in.readLine()) != null) {
                 everything.append(line);
             }
             requestFile = everything.toString();
+            contentLength = contentLength + requestFile.length();
         } catch (IOException e) {
             System.out.println("File not found at " +  pathFile);
         }
     }
 
-    private void readCurrentDate() {
-        Date dnow = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat("E',' dd MMMM yyyy hh:mm:ss 'GMT' ");
-        ft.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String date = ft.format(dnow);
-    }
+
     public static void main(String[] args) {
-        ServerResponse a = new ServerResponse("test.htm"," ");
+        ServerResponse a = new ServerResponse("test.htm","HTTP/1.1");
     }
 
 }

@@ -7,6 +7,7 @@ public class ThreadClient implements Runnable {
     private String pathFile;
     private String httpVersion;
     private String responseString;
+    private ServerResponse response;
 
     public ThreadClient(Socket csocket,String accessPath,String errorPath) {
         this.csocket = csocket;
@@ -19,8 +20,8 @@ public class ThreadClient implements Runnable {
                 new InputStreamReader(csocket.getInputStream()));
             System.out.println("Connected to " + csocket.getInetAddress().toString()
                     +":"+csocket.getPort());
-            DataOutputStream writeOut = new DataOutputStream(csocket.getOutputStream());
             String inputLine;
+            DataOutputStream writeOut = new DataOutputStream(csocket.getOutputStream());
             // Get method
             inputLine = in.readLine();
             if (inputLine.startsWith("GET")) {
@@ -30,11 +31,7 @@ public class ThreadClient implements Runnable {
                 //TODO if has less than 2 parametres
                 httpVersion = parametres[2];
                 // create responce string here
-                ServerResponse response = new ServerResponse("test.htm","");
-                responseString = response.getResponse();
-                System.out.println(responseString);
-                writeOut.writeBytes(responseString);
-
+                 response = new ServerResponse("test.htm",httpVersion);
             // 405 fail
             }else {
                 writeOut.writeBytes("405 Method Not Allowed");
@@ -46,6 +43,14 @@ public class ThreadClient implements Runnable {
             // wait for header connection and close
             while ((inputLine = in.readLine()) != null) {
                 if (inputLine.startsWith("Connection")) {
+                    //writeOut.println(response.getOk());
+                    //writeOut.writeBytes(response.getDate());
+                    //writeOut.writeBytes(response.getServer());
+                    //writeOut.writeBytes(response.getLastModified());
+                    //writeOut.writeBytes(response.getConnection());
+                    //writeOut.println(response.getContentType());
+                    //writeOut.println(response.getContentLength());
+                    writeOut.writeBytes(response.getRequestFile());
                     // send responce string
                     writeOut.flush();
                     writeOut.close();
