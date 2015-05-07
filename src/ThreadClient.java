@@ -6,6 +6,7 @@ public class ThreadClient implements Runnable {
     private Socket csocket;
     private String pathFile;
     private String httpVersion;
+    private String responseString;
 
     public ThreadClient(Socket csocket,String accessPath,String errorPath) {
         this.csocket = csocket;
@@ -29,9 +30,13 @@ public class ThreadClient implements Runnable {
                 //TODO if has less than 2 parametres
                 httpVersion = parametres[2];
                 // create responce string here
+                ServerResponse response = new ServerResponse("test.htm","");
+                responseString = response.getResponse();
+                System.out.println(responseString);
+                writeOut.writeBytes(responseString);
+
             // 405 fail
             }else {
-                System.out.println("?");
                 writeOut.writeBytes("405 Method Not Allowed");
                 writeOut.flush();
                 writeOut.close();
