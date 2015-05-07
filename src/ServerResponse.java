@@ -61,7 +61,12 @@ public class ServerResponse {
         }
     }
 
-
+    private void readCurrentDate() {
+        Date dnow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("E',' dd MMMM yyyy hh:mm:ss 'GMT' ");
+        ft.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String date = ft.format(dnow);
+    }
     public static void main(String[] args) {
         ServerResponse a = new ServerResponse("test.htm"," ");
     }
