@@ -10,50 +10,36 @@ public class ServerResponse {
     private Map<String,String> dictionary;
     private String ok = " 200 OK";
     private String date = "Date: ";
-    private String server = "Server: CE325 (Java based server)";
+    private String server = "Server: CE325 (Java based server)\r\n";
     private String lastModified = "Last-Modified: ";
     private String contentLength = "Content-Length: ";
-    private String connection = "Connection: close";
+    private String connection = "Connection: close\r\n";
     private String contentType = "Content-Type: ";
     private SimpleDateFormat ft;
+    private ServerIO io;
 
-    public ServerResponse(String pathFile,String httpVersion) {
-        ok = httpVersion + ok;
+    public ServerResponse(String pathFile,String httpVersion,ServerIO io) throws IOException {
+        this.io = io;
+        pathFile = pathFile.replaceAll("[/]","");
+        System.out.println(pathFile);
+        io.openFile(pathFile);
+        ok = httpVersion + ok + "\r\n";
         readCurrentDate();
         readMimeFile();
         getContentType(pathFile);
-        readRequestFile(pathFile);
-        createRespose();
+        readFileInformations();
     }
 
-    public String getOk() {
-        return ok;
-    }
-    public String getDate() {
-        return date;
-    }
-    public String getServer() {
-        return server;
-    }
-    public String getLastModified() {
-        return lastModified;
-    }
-    public String getContentLength() {
-        return contentLength;
-    }
-    public String getConnection() {
-        return connection;
-    }
-    public String getContentType() {
-        return contentType;
-    }
-    public String getRequestFile() {
-        return requestFile;
-    }
-
-    private void createRespose() {
-        response = ok + date + server + lastModified + contentLength + connection + contentType;
-        response = response + " " + requestFile;
+    public void sendResponse() throws IOException{
+        io.writeString(ok);
+        io.writeString(date);
+        io.writeString(server);
+        io.writeString(lastModified);
+        io.writeString(connection);
+        io.writeString(contentType);
+        io.writeString(contentLength);
+        io.writeString("\r\n");
+        io.writeFile();
     }
     // get content type
     private void getContentType(String pathFile) {
@@ -62,14 +48,14 @@ public class ServerResponse {
         if (i > 0) {
                 extension = pathFile.substring(i+1);
         }
-        contentType = contentType + dictionary.get(extension);
+        contentType = contentType + dictionary.get(extension) + "\r\n";
     }
     // read current date
     private void readCurrentDate() {
         ft = new SimpleDateFormat("E',' dd MMMM yyyy hh:mm:ss 'GMT' ");
         ft.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dnow = new Date();
-        date = date + ft.format(dnow);
+        date = date + ft.format(dnow) + "\r\n";
     }
     // read mime types to a dictionary
     private void readMimeFile() {
@@ -85,28 +71,9 @@ public class ServerResponse {
             System.out.println("File not found at " +  "MIME.txt");
         }
     }
-    // Read request file and last modified date
-    private void readRequestFile(String pathFile) {
-        StringBuilder everything = new StringBuilder();
-        String line;
-        File file = new File(pathFile);
-        //contentLength = contentLength + String.valueOf(file.length());
-        lastModified = lastModified + ft.format(file.lastModified());
-        try {
-            in = new BufferedReader(new FileReader(file));
-            while ((line = in.readLine()) != null) {
-                everything.append(line);
-            }
-            requestFile = everything.toString();
-            contentLength = contentLength + requestFile.length();
-        } catch (IOException e) {
-            System.out.println("File not found at " +  pathFile);
-        }
+    // Read file informations
+    private void readFileInformations() {
+        lastModified = lastModified + ft.format((io.getFile()).lastModified()) + "\r\n";
+        contentLength = contentLength + io.getSizeFile() + "\r\n";
     }
-
-
-    public static void main(String[] args) {
-        ServerResponse a = new ServerResponse("test.htm","HTTP/1.1");
-    }
-
 }

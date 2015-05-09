@@ -24,12 +24,13 @@ public class Server {
             serverSocket.bind(new InetSocketAddress("localhost",listenPort));
             while(true) {
                 Socket clientSocket = serverSocket.accept();
-                new Thread(new ThreadClient(clientSocket,accessPath,errorPath)).start();
+                new Thread(new ServerThread(clientSocket,accessPath,errorPath)).start();
             }
 
         } catch (IOException e) {
-            System.out.println("Exception caught when trying to listen on port "
-                + listenPort + " or listening for a connection");
+            System.out.println("Exception caught ");
+            System.out.println("when trying to listen on port ");
+            System.out.println(listenPort + " or listening for a connection");
             System.out.println(e.getMessage());
         }
     }
