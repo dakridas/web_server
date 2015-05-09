@@ -12,8 +12,10 @@ public class ServerIO {
     private BufferedReader bufSocketIn;
     private File file;
     private int sizeFile;
+    private String rootPath;
+    private boolean deleteFile = false;
 
-    public ServerIO(Socket socket) throws IOException{
+    public ServerIO(Socket socket,String rootPath) throws IOException{
         socketIn = socket.getInputStream();
         socketOut = socket.getOutputStream();
         bufSocketIn = new BufferedReader(new InputStreamReader(socketIn));
@@ -28,6 +30,37 @@ public class ServerIO {
         file = new File(path);
         fileIn = new FileInputStream(file);
         sizeFile = (int)file.length();
+    }
+
+    // open index file if exist or open default index.html
+    public String openIndexFile(String path) {
+
+        String newPath = "";
+        try {
+            newPath = path + "index.html";
+            file  = new File(newPath);
+            fileIn = new FileInputStream(file);
+            sizeFile = (int)file.length();
+        } catch (FileNotFoundException e) {
+            try {
+                newPath = path + "index.htm";
+                file  = new File(newPath);
+                fileIn = new FileInputStream(file);
+                sizeFile = (int)file.length();
+            } catch (FileNotFoundException a ) {
+                try{
+                    newPath = rootPath + "index.html";
+                    BuildIndexFile index = new BuildIndexFile(rootPath);
+                    file = index.getFile();
+                    fileIn = new FileInputStream(file);
+                    sizeFile = (int)file.length();
+                    deleteFile = true;
+                }catch (FileNotFoundException b) {
+                }
+            }
+
+        }
+        return newPath;
     }
 
     public void writeFile() throws IOException{
@@ -58,5 +91,8 @@ public class ServerIO {
         socketOut.close();
         socketIn.close();
         bufSocketIn.close();
+        if (deleteFile) {
+            file.delete();
+        }
     }
 }
