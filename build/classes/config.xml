@@ -3,8 +3,8 @@
   <listen port="8000" />
   <statistics port="8001" />
   <log>
-    <access filepath="/path/to/access/log.txt" />
-    <error filepath="/path/to/error/log.txt" />
+    <access filepath="access/log.txt" />
+    <error filepath="error/log.txt" />
   </log>
   <documentroot filepath="/path/to/document-root/" />
   <runphp>yes</run-php>

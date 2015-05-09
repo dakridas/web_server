@@ -1,26 +1,2 @@
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
-aris
-mitsos
+/127.0.0.1 - [Sat May 09 11:51:02 EEST 2015] GET /Git.pdf HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sat May 09 11:51:10 EEST 2015] GET /Git.pdf HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
