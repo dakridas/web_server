@@ -24,7 +24,7 @@ public class Server {
             serverSocket.bind(new InetSocketAddress("localhost",listenPort));
             while(true) {
                 Socket clientSocket = serverSocket.accept();
-                new Thread(new ServerThread(clientSocket,accessPath,errorPath)).start();
+                new Thread(new ServerThread(clientSocket,accessPath,errorPath,rootPath)).start();
             }
 
         } catch (IOException e) {

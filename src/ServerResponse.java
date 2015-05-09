@@ -17,16 +17,25 @@ public class ServerResponse {
     private String contentType = "Content-Type: ";
     private SimpleDateFormat ft;
     private ServerIO io;
+    private boolean isDirectory;
 
     public ServerResponse(String pathFile,String httpVersion,ServerIO io) throws IOException {
         this.io = io;
-        pathFile = pathFile.replaceAll("[/]","");
+        pathFile = pathFile.replaceFirst("[/]","");
+        if (pathFile.endsWith("/")) {
+            isDirectory = true;
+        }
         System.out.println(pathFile);
-        io.openFile(pathFile);
         ok = httpVersion + ok + "\r\n";
         readCurrentDate();
         readMimeFile();
-        getContentType(pathFile);
+        if (isDirectory) {
+            pathFile = io.openIndexFile(pathFile);
+            getContentType(pathFile);
+        }else {
+            io.openFile(pathFile);
+            getContentType(pathFile);
+        }
         readFileInformations();
     }
 
@@ -34,8 +43,8 @@ public class ServerResponse {
         io.writeString(ok);
         io.writeString(date);
         io.writeString(server);
-        io.writeString(lastModified);
         io.writeString(connection);
+        io.writeString(lastModified);
         io.writeString(contentType);
         io.writeString(contentLength);
         io.writeString("\r\n");

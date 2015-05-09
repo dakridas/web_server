@@ -8,19 +8,25 @@ public class ServerThread implements Runnable {
 
     private Socket socket;
     private String pathFile;
+    private String rootPath;
+    private String errorPath;
+    private String accessPath;
     private String httpVersion;
     private String responseString;
     private ServerResponse response;
     private String inputLine;
     private ServerIO io;
 
-    public ServerThread(Socket socket,String accessPath,String errorPath) {
+    public ServerThread(Socket socket,String accessPath,String errorPath,String rootPath) {
         this.socket = socket;
+        this.accessPath = accessPath;
+        this.errorPath = errorPath;
+        this.rootPath = rootPath;
     }
 
     public void run() {
         try {
-            io = new ServerIO(socket);
+            io = new ServerIO(socket,rootPath);
             System.out.printf("Connected to ");
             System.out.printf(socket.getInetAddress().toString());
             System.out.printf(":"+socket.getPort()+"\n");
@@ -44,7 +50,12 @@ public class ServerThread implements Runnable {
             }
             // close io
             io.closeIO();
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            try {
+                io.closeIO();
+            } catch (IOException d) {
+            }
+        }
 
 
     }
