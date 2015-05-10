@@ -4,92 +4,86 @@ import java.util.*;
 public class BuildIndexFile {
 
     private File file;
+    private File [] files;
     private FileOutputStream fileOut;
+    private String indexString;
 
     public BuildIndexFile(String path) {
+        openIndexFile(path);
+        readDirectory(path);
+        writeStyle();
+        writeBody(path);
+    }
+    // create index.html
+    private void openIndexFile(String path) {
         try {
-            file = new File(path);
+            file = new File(path+"index.html");
             file.createNewFile();
             fileOut = new FileOutputStream(file);
-        }catch(IOException e) {}
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
     }
-
-    private buildHtml() {
-
-        String str = "<!DOCTYPE html>
-        <html lang="de">
-            <head>
-                <meta charset="utf-8"/>
-                <style>
-                    body {
-                        background-color: #eeeeee;
-                        font-family: Verdana, Arial, sans-serif;
-                        font-size: 90%;
-                        margin: 4em 0;
-                    }
-
-                    article,
-                    footer {
-                        display: block;
-                        margin: 0 auto;
-                        width: 480px;
-                    }
-
-                    a {
-                        color: #004466;
-                        text-decoration: none;
-                    }
-                    a:hover {
-                        text-decoration: underline;
-                    }
-                    a:visited {
-                        color: #666666;
-                    }
-
-                    article {
-                        background-color: #ffffff;
-                        border: #cccccc solid 1px;
-                        -moz-border-radius: 11px;
-                        -webkit-border-radius: 11px;
-                        border-radius: 11px;
-                        padding: 0 1em;
-                    }
-                    h1 {
-                        font-size: 140%;
-                    }
-                        ol {
-                            line-height: 1.4em;
-                            list-style-type: disc;
-                        }
-                    li.directory a:before {
-                        content: '[ ';
-                    }
-                    li.directory a:after {
-                        content: ' ]';
-                    }
-
-                    footer {
-                        font-size: 70%;
-                        text-align: center;
-                    }
-                </style>
-                <title>Directory Index</title>
-            </head>
-            <body>
-                <article>
-                    <ol>
-                        <li class="directory"><a href="/root">parent directory</a></li>
-                        <li class="directory"><a href="files">files</a></li>
-                        <li class="directory"><a href="images">images</a></li>
-                        <li class="directory"><a href="videos">videos</a></li>
-                        <li class="file"><a href="index.html">index.html</a></li>
-                    </ol>
-                </article>
-            </body>
-        </html>";
+    // read directory's files and save them to list
+    private void readDirectory(String path) {
+        File directory = new File(path);
+        files = directory.listFiles();
     }
+    // write to index.html style head from style.txt
+    private void writeStyle() {
+        String inputLine;
+        try {
+            ServerIO io = new ServerIO();
+            io.openFile("style.txt");
 
-    public File getFile() {
-        return file;
+            inputLine = io.readFile();
+            while ((inputLine = io.readFile()) != null) {
+                inputLine = inputLine + "\n";
+                fileOut.write(inputLine.getBytes());
+                fileOut.flush();
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // write body to index.html
+    private void writeBody(String path) {
+        try{
+            String str;
+            str = "    <body>\n";
+            fileOut.write(str.getBytes());
+            fileOut.flush();
+            str = "      <article>\n";
+            fileOut.write(str.getBytes());
+            fileOut.flush();
+            str = "        <ol>\n";
+            fileOut.write(str.getBytes());
+            fileOut.flush();
+
+            str = String.format("          <li class=\"directory\"><a href=\"%s/\">%s</a></li>\n","..","parent directory");
+            fileOut.write(str.getBytes());
+            fileOut.flush();
+            if (files != null) {
+                for (File curr : files) {
+                    if (curr.isDirectory()) {
+                        str = String.format("          <li class=\"directory\"><a href=\"%s/\">%s</a></li>\n",curr.getName(),curr.getName());
+                        fileOut.write(str.getBytes());
+                        fileOut.flush();
+                    }
+                }
+                for (File curr : files) {
+                    if (!curr.isDirectory() && (!(curr.getName()).equals("index.html"))) {
+                        str = String.format("          <li class=\"file\"><a href=\"%s\">%s</a></li>\n",curr.getName(),curr.getName());
+                        fileOut.write(str.getBytes());
+                        fileOut.flush();
+                    }
+                }
+            }
+
+            fileOut.close();
+
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }

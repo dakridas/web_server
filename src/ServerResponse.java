@@ -40,14 +40,14 @@ public class ServerResponse {
     }
 
     public void sendResponse() throws IOException{
-        io.writeString(ok);
-        io.writeString(date);
-        io.writeString(server);
-        io.writeString(connection);
-        io.writeString(lastModified);
-        io.writeString(contentType);
-        io.writeString(contentLength);
-        io.writeString("\r\n");
+        io.writeToSocket(ok);
+        io.writeToSocket(date);
+        io.writeToSocket(server);
+        io.writeToSocket(connection);
+        io.writeToSocket(lastModified);
+        io.writeToSocket(contentType);
+        io.writeToSocket(contentLength);
+        io.writeToSocket("\r\n");
         io.writeFile();
     }
     // get content type

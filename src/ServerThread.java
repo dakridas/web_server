@@ -2,9 +2,6 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.text.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 
 public class ServerThread implements Runnable {
 
@@ -44,7 +41,7 @@ public class ServerThread implements Runnable {
             logstr = logstr + ft.format(dnow) + "] ";
 
             // read the input
-            inputLine = io.readLine();
+            inputLine = io.readSocket();
             if (inputLine.startsWith("GET")) {
                 String parametres [] = inputLine.split("\\s");
                 pathFile = parametres[1];
@@ -59,7 +56,7 @@ public class ServerThread implements Runnable {
                     logstr = logstr + inputLine + " -> 200 OK ";
                     response = new ServerResponse(pathFile,httpVersion,io);
                     // wait for header connection and close
-                    while ((inputLine = io.readLine()) != null) {
+                    while ((inputLine = io.readSocket()) != null) {
                         if (inputLine.startsWith("User-Agent")) {
                             logstr = logstr + "\"" + inputLine + "\"";
                         }
@@ -82,6 +79,7 @@ public class ServerThread implements Runnable {
             // close io
             io.closeIO();
         } catch (IOException e) {
+            e.printStackTrace();
             try {
                 io.closeIO();
             } catch (IOException d) {

@@ -57,15 +57,3 @@
     </style>
     <title>Directory Index</title>
   </head>
-  <body>
-    <article>
-      <ol>
-        <li class="directory"><a href="/root">parent directory</a></li>
-        <li class="directory"><a href="files">files</a></li>
-        <li class="directory"><a href="images">images</a></li>
-        <li class="directory"><a href="videos">videos</a></li>
-        <li class="file"><a href="index.html">index.html</a></li>
-      </ol>
-    </article>
-  </body>
-</html>

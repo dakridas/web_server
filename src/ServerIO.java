@@ -1,8 +1,5 @@
 import java.net.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 
 public class ServerIO {
 
@@ -10,18 +7,21 @@ public class ServerIO {
     private InputStream socketIn;
     private InputStream fileIn;
     private BufferedReader bufSocketIn;
+    private BufferedReader bufFileIn;
     private File file;
     private int sizeFile;
     private String rootPath;
     private boolean deleteFile = false;
 
+    // opens socket stream
     public ServerIO(Socket socket,String rootPath) throws IOException{
         socketIn = socket.getInputStream();
         socketOut = socket.getOutputStream();
         bufSocketIn = new BufferedReader(new InputStreamReader(socketIn));
     }
+    public ServerIO() throws IOException{}
 
-    public void writeString(String message) throws IOException{
+    public void writeToSocket(String message) throws IOException{
         socketOut.write(message.getBytes());
         socketOut.flush();
     }
@@ -29,37 +29,51 @@ public class ServerIO {
     public void openFile(String path) throws IOException{
         file = new File(path);
         fileIn = new FileInputStream(file);
+        bufFileIn = new BufferedReader(new InputStreamReader(fileIn));
         sizeFile = (int)file.length();
     }
 
-    // open index file if exist or open default index.html
+    // open index file if exist or create temporary index.html
     public String openIndexFile(String path) {
 
         String newPath = "";
-        try {
+        boolean fileNotFound = true;
+
+        // directory file
+        File directory = new File(path);
+        // list of files in directory
+        File[] list = directory.listFiles();
+
+        if (list!=null) {
+            for (File curr : list) {
+                // TODO ignore case
+                if ((curr.getName()).equals("index.html")) {
+                    newPath = path + "index.html";
+                    fileNotFound = false;
+                }else if ((curr.getName()).equals("index.htm")) {
+                    newPath = path + "index.htm";
+                    fileNotFound = false;
+                }else if ((curr.getName()).equals("index.php")) {
+                    fileNotFound = false;
+                }
+            }
+        }
+
+        if (fileNotFound) {
+            BuildIndexFile indexFile = new BuildIndexFile(path);
             newPath = path + "index.html";
+            deleteFile = true;
+        }
+
+        // open index and save informations
+        try {
             file  = new File(newPath);
             fileIn = new FileInputStream(file);
             sizeFile = (int)file.length();
-        } catch (FileNotFoundException e) {
-            try {
-                newPath = path + "index.htm";
-                file  = new File(newPath);
-                fileIn = new FileInputStream(file);
-                sizeFile = (int)file.length();
-            } catch (FileNotFoundException a ) {
-                try{
-                    newPath = rootPath + "index.html";
-                    BuildIndexFile index = new BuildIndexFile(rootPath);
-                    file = index.getFile();
-                    fileIn = new FileInputStream(file);
-                    sizeFile = (int)file.length();
-                    deleteFile = true;
-                }catch (FileNotFoundException b) {
-                }
-            }
-
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+
         return newPath;
     }
 
@@ -76,8 +90,12 @@ public class ServerIO {
         socketOut.flush();
     }
 
-    public String readLine() throws IOException{
+    public String readSocket() throws IOException{
         return bufSocketIn.readLine();
+    }
+
+    public String readFile() throws IOException{
+        return bufFileIn.readLine();
     }
 
     public File getFile() {
@@ -88,9 +106,11 @@ public class ServerIO {
     }
 
     public void closeIO() throws IOException{
+        System.out.println("Close files");
         socketOut.close();
         socketIn.close();
         bufSocketIn.close();
+        // delete temporary file
         if (deleteFile) {
             file.delete();
         }
