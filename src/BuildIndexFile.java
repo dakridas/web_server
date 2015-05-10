@@ -59,8 +59,11 @@ public class BuildIndexFile {
             str = "        <ol>\n";
             fileOut.write(str.getBytes());
             fileOut.flush();
-
-            str = String.format("          <li class=\"directory\"><a href=\"%s/\">%s</a></li>\n","..","parent directory");
+            // check path for root directory
+            String [] results = path.split("\\/");
+            if (results.length > 1) {
+                str = String.format("          <li class=\"directory\"><a href=\"%s/\">%s</a></li>\n","..","parent directory");
+            }
             fileOut.write(str.getBytes());
             fileOut.flush();
             if (files != null) {
