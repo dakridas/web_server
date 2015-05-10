@@ -1,3 +1,0 @@
-/127.0.0.1 - [Sat May 09 11:47:53 EEST 2015] GET /Git.pdf HTTP/1.1 400 Bad Request
-/127.0.0.1 - [Sat May 09 11:47:57 EEST 2015] GET /Git.pdf HTTP/1.1 400 Bad Request
-/127.0.0.1 - [Sat May 09 11:47:59 EEST 2015] GET /Git.pdf HTTP/1.1 400 Bad Request

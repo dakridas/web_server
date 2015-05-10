@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /127.0.0.1 - [Sat May 09 11:51:02 EEST 2015] GET /Git.pdf HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
 /127.0.0.1 - [Sat May 09 11:51:10 EEST 2015] GET /Git.pdf HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
 /127.0.0.1 - [Sat May 09 10:22:30 EEST 2015] GET /root/files/Git.pdf HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:26.0) Gecko/20100101 Firefox/26.0"
@@ -326,3 +327,19 @@
 /127.0.0.1 - [Sun May 10 06:36:25 EEST 2015] GET /root/images/Lenna.png HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:33.0) Gecko/20100101 Firefox/33.0"
 /127.0.0.1 - [Sun May 10 06:36:27 EEST 2015] GET /root/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:33.0) Gecko/20100101 Firefox/33.0"
 /127.0.0.1 - [Sun May 10 06:36:27 EEST 2015] GET /root/videos/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:33.0) Gecko/20100101 Firefox/33.0"
+=======
+/127.0.0.1 - [Sun May 10 05:22:44 EEST 2015] GET /root/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:22:46 EEST 2015] GET /root/files/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:22:48 EEST 2015] GET /root/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:22:49 EEST 2015] GET /root/images/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:22:52 EEST 2015] GET /root/images/Kayaker.jpg HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:22:54 EEST 2015] GET /root/images/Kayaker.jpg HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:22:59 EEST 2015] GET /root/images/Lenna.png HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:22:59 EEST 2015] GET /root/images/Lenna.png HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:23:02 EEST 2015] GET /root/images/IC1396_Hubble.jpg HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:23:06 EEST 2015] GET /root/images/IC1396_Hubble.jpg HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:23:09 EEST 2015] GET /root/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:23:17 EEST 2015] GET /root/videos/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:23:18 EEST 2015] GET /root/videos/small.mp4 HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+/127.0.0.1 - [Sun May 10 05:23:22 EEST 2015] GET /root/ HTTP/1.1 -> 200 OK "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0"
+>>>>>>> d72b36c0750ff5834455529445cfd8adcf3e8898
