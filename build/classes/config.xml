@@ -3,10 +3,10 @@
   <listen port="8000" />
   <statistics port="8001" />
   <log>
-    <access filepath="access/log.txt" />
-    <error filepath="error/log.txt" />
+    <access filepath="logAccess.txt" />
+    <error filepath="logError.txt" />
   </log>
-  <documentroot filepath="/path/to/document-root/" />
+  <documentroot filepath="root/" />
   <runphp>yes</run-php>
   <denyaccess>
     <ip>52.8.64.0/24</ip>

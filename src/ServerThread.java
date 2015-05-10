@@ -64,7 +64,7 @@ public class ServerThread implements Runnable {
                 else {
                     logErrorStr = logstr + inputLine;
                     logstr = logstr + inputLine + " -> 200 OK ";
-                    response = new ServerResponse(pathFile,httpVersion,io);
+                    response = new ServerResponse(pathFile,httpVersion,io,rootPath);
                     // wait for header connection and close
                     while ((inputLine = io.readSocket()) != null) {
                         if (inputLine.startsWith("User-Agent")) {
