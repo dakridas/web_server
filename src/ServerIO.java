@@ -106,7 +106,6 @@ public class ServerIO {
     }
 
     public void closeIO() throws IOException{
-        System.out.println("Close files");
         socketOut.close();
         socketIn.close();
         bufSocketIn.close();

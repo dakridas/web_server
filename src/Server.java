@@ -12,7 +12,8 @@ public class Server implements Serializable {
     private long onTime;
     private int connections;
     private int errors;
-    private long averageResponceTime;
+    private long averageResponseTime;
+    private long totalResponseTime;
 
     public Server(String path) {
         settings = new Configure(path);
@@ -25,25 +26,33 @@ public class Server implements Serializable {
 
     public Server(){}
 
-    public void incriseErrors(){
+    public void increaseErrors(){
         errors++;
     }
 
+    public void addResponseTime(long time) {
+        totalResponseTime = totalResponseTime + time;
+    }
+
+    public void calcAverageTime() {
+        averageResponseTime = totalResponseTime / connections;
+    }
+
     public void runServer() {
-        System.out.println("Total running time :"+onTime+" seconds");
-        System.out.println("Total connections :"+connections);
+        System.out.println("Total running time in seconds : "+onTime);
+        System.out.println("Total connections : "+connections);
+        System.out.println("Total errors : "+errors);
+        System.out.println("Average response time in milliseconds : "+averageResponseTime);
 
         long startTime;
-        Serialize object = new Serialize();
         try (ServerSocket serverSocket = new ServerSocket();) {
             serverSocket.bind(new InetSocketAddress("localhost",listenPort));
             while(true) {
                 startTime = (System.currentTimeMillis())/1000;
                 Socket clientSocket = serverSocket.accept();
-                new Thread(new ServerThread(clientSocket,accessPath,errorPath,rootPath)).start();
+                new Thread(new ServerThread(clientSocket,accessPath,errorPath,rootPath,this)).start();
                 connections++;
                 onTime = onTime + ((System.currentTimeMillis()/1000) - startTime);
-                object.Serialize(this,"server");
             }
 
         } catch (IOException e) {

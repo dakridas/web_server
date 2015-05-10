@@ -25,7 +25,6 @@ public class ServerResponse {
         if (pathFile.endsWith("/")) {
             isDirectory = true;
         }
-        System.out.println(pathFile);
         ok = httpVersion + ok + "\r\n";
         readCurrentDate();
         readMimeFile();

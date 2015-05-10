@@ -21,8 +21,10 @@ public class ServerThread implements Runnable {
     private String logErrorStr;
     private Log logWrite;
     private StringWriter errors;
+    private Server server;
 
-    public ServerThread(Socket socket,String accessPath,String errorPath,String rootPath) {
+    public ServerThread(Socket socket,String accessPath,String errorPath,String rootPath,Server server) {
+        this.server = server;
         this.socket = socket;
         logWrite = new Log(accessPath, errorPath);
         this.accessPath = accessPath;
@@ -31,6 +33,8 @@ public class ServerThread implements Runnable {
     }
 
     public void run() {
+        long start = System.currentTimeMillis();
+        Serialize object = new Serialize();
         try {
             io = new ServerIO(socket,rootPath);
             System.out.printf("Connected to ");
@@ -51,6 +55,7 @@ public class ServerThread implements Runnable {
             if (inputLine.startsWith("GET")) {
 
                 if (!(httpVersion.equals("HTTP/1.0")) && !(httpVersion.equals("HTTP/1.1"))) {
+                    server.increaseErrors();
                     logstr = logstr + inputLine + " 400 Bad Request";
                     logWrite.writeToError(logstr);
                     logWrite.closeFiles();
@@ -75,6 +80,7 @@ public class ServerThread implements Runnable {
                 }
             // 405 fail
             }else {
+                server.increaseErrors();
                 logstr = logstr + inputLine + " 405 Method Not Allowed";
                 logWrite.writeToError(logstr);
                 logWrite.closeFiles();
@@ -82,6 +88,7 @@ public class ServerThread implements Runnable {
             }
         // 404 fail
         } catch (FileNotFoundException ex) {
+            server.increaseErrors();
             errors = new StringWriter();
             ex.printStackTrace(new PrintWriter(errors));
             logErrorStr = logErrorStr + " 404 Not Found " + errors;
@@ -94,6 +101,7 @@ public class ServerThread implements Runnable {
             }
         // 500 fail
         } catch (IOException ex) {
+            server.increaseErrors();
             errors = new StringWriter();
             ex.printStackTrace(new PrintWriter(errors));
             logErrorStr = logErrorStr + " 500 Internal Server Error" + errors;
@@ -106,6 +114,11 @@ public class ServerThread implements Runnable {
             socket.close();
             io.closeIO();
         }catch (IOException e) {}
+
+        long end = System.currentTimeMillis();
+        server.addResponseTime(end-start);
+        server.calcAverageTime();
+        object.Serialize(server,"server");
     }
 
     public void send400() throws IOException{
