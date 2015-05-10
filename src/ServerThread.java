@@ -18,7 +18,9 @@ public class ServerThread implements Runnable {
     private SimpleDateFormat ft;
     private Date dnow;
     private String logstr;
+    private String logErrorStr;
     private Log logWrite;
+    private StringWriter errors;
 
     public ServerThread(Socket socket,String accessPath,String errorPath,String rootPath) {
         this.socket = socket;
@@ -42,17 +44,20 @@ public class ServerThread implements Runnable {
 
             // read the input
             inputLine = io.readSocket();
+            String parametres [] = inputLine.split("\\s");
+            pathFile = parametres[1];
+            httpVersion = parametres[2];
+
             if (inputLine.startsWith("GET")) {
-                String parametres [] = inputLine.split("\\s");
-                pathFile = parametres[1];
-                httpVersion = parametres[2];
 
                 if (!(httpVersion.equals("HTTP/1.0")) && !(httpVersion.equals("HTTP/1.1"))) {
                     logstr = logstr + inputLine + " 400 Bad Request";
                     logWrite.writeToError(logstr);
                     logWrite.closeFiles();
+                    send400();
                 }
                 else {
+                    logErrorStr = logstr + inputLine;
                     logstr = logstr + inputLine + " -> 200 OK ";
                     response = new ServerResponse(pathFile,httpVersion,io);
                     // wait for header connection and close
@@ -68,24 +73,84 @@ public class ServerThread implements Runnable {
                     logWrite.writeToAccess(logstr);
                     logWrite.closeFiles();
                 }
-                socket.close();
             // 405 fail
             }else {
                 logstr = logstr + inputLine + " 405 Method Not Allowed";
                 logWrite.writeToError(logstr);
                 logWrite.closeFiles();
-                socket.close();
+                send405();
             }
-            // close io
-            io.closeIO();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // 404 fail
+        } catch (FileNotFoundException ex) {
+            errors = new StringWriter();
+            ex.printStackTrace(new PrintWriter(errors));
+            logErrorStr = logErrorStr + " 404 Not Found " + errors;
+            logWrite.writeToError(logErrorStr);
+            logWrite.closeFiles();
             try {
-                io.closeIO();
-            } catch (IOException d) {
+                send404();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        // 500 fail
+        } catch (IOException ex) {
+            errors = new StringWriter();
+            ex.printStackTrace(new PrintWriter(errors));
+            logErrorStr = logErrorStr + " 500 Internal Server Error" + errors;
+            logWrite.writeToError(logErrorStr);
+            logWrite.closeFiles();
+            send500();
         }
 
+        try {
+            socket.close();
+            io.closeIO();
+        }catch (IOException e) {}
+    }
 
+    public void send400() throws IOException{
+        String str;
+        str = "<!DOCTYPE html> <html> <head> 400 Bad Reqeust </head> <body> <p> Resource Not Found </p> </body> </html>";
+        int size = str.length();
+        io.writeToSocket(httpVersion + " 200 OK\r\n");
+        io.writeToSocket("text/html\r\n");
+        io.writeToSocket(Integer.toString(size)+"\r\n");
+        io.writeToSocket("\r\n");
+        io.writeToSocket(str);
+    }
+
+    public void send404() throws IOException{
+        String str;
+        str = "<!DOCTYPE html> <html> <head> 404 Not Found: </head> <body> <p> Resource Not Found </p> </body> </html>";
+        int size = str.length();
+        io.writeToSocket(httpVersion + " 200 OK\r\n");
+        io.writeToSocket("text/html\r\n");
+        io.writeToSocket(Integer.toString(size)+"\r\n");
+        io.writeToSocket("\r\n");
+        io.writeToSocket(str);
+    }
+
+    public void send405() throws IOException{
+        String str;
+        str = "<!DOCTYPE html> <html> <head> 405 Method Not Allowed </head> </html>";
+        int size = str.length();
+        io.writeToSocket(httpVersion + " 200 OK\r\n");
+        io.writeToSocket("text/html\r\n");
+        io.writeToSocket(Integer.toString(size)+"\r\n");
+        io.writeToSocket("\r\n");
+        io.writeToSocket(str);
+    }
+
+    public void send500() {
+        String str;
+        str = "<!DOCTYPE html> <html> <head> 500 Internal Server Error </head> </html>";
+        int size = str.length();
+        try {
+            io.writeToSocket(httpVersion + " 200 OK\r\n");
+            io.writeToSocket("text/html\r\n");
+            io.writeToSocket(Integer.toString(size)+"\r\n");
+            io.writeToSocket("\r\n");
+            io.writeToSocket(str);
+        } catch (IOException e) {}
     }
 }
