@@ -7,7 +7,9 @@ import java.lang.*;
 import java.net.*;
 import java.util.regex.*;
 
-public class DocumentBuilder extends Object{
+public class DocumentBuilder extends Object implements Serializable{
+
+    private static final long serialVersionUID = 42L;
 
     public Document getDocument(String location) {
         String documentStr = getDocumentAsString(location);

@@ -8,7 +8,9 @@ import java.util.regex.*;
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class Node extends Object{
+public class Node extends Object implements Serializable{
+
+    private static final long serialVersionUID = 42L;
 
     private Document doc;
     private String nodeStr;

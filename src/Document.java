@@ -3,8 +3,11 @@
 package gr.uth.inf.ce325.xml_parser;
 import java.lang.Object;
 import java.util.LinkedList;
+import java.io.*;
 
-public class Document extends Object{
+public class Document extends Object implements Serializable{
+
+    private static final long serialVersionUID = 42L;
 
 	private Node rootNode;
 	private LinkedList <Namespace> namespaces;

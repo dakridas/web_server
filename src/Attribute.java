@@ -3,8 +3,11 @@
 package gr.uth.inf.ce325.xml_parser;
 import java.lang.Object;
 import java.util.regex.*;
+import java.io.*;
 
-public class Attribute extends Object {
+public class Attribute extends Object implements Serializable {
+
+    private static final long serialVersionUID = 42L;
 
 	private String name;
 	private String value;

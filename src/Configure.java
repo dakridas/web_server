@@ -4,8 +4,9 @@ import gr.uth.inf.ce325.xml_parser.Attribute;
 import gr.uth.inf.ce325.xml_parser.Namespace;
 import gr.uth.inf.ce325.xml_parser.Node;
 import java.util.List;
+import java.io.*;
 
-public class Configure {
+public class Configure implements Serializable{
 
     private DocumentBuilder db;
     private Document document;
