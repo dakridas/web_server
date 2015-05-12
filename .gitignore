@@ -1,4 +1,6 @@
 *.class
 *.swp
 *.jar
-
+*.ser
+logAccess.txt
+logError.txt
