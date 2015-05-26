@@ -20,12 +20,9 @@ public class ServerResponse {
     private boolean isDirectory;
 
     public ServerResponse(String pathFile,String httpVersion,ServerIO io,String rootPath) throws IOException {
-        System.out.println(pathFile);
-        System.out.println(rootPath);
         if (!pathFile.contains(rootPath)) {
             pathFile = rootPath + pathFile;
         }
-        System.out.println(pathFile);
         this.io = io;
         pathFile = pathFile.replaceFirst("[/]","");
         if (pathFile.endsWith("/")) {

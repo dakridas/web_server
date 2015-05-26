@@ -1,6 +1,5 @@
 // Dimitris Akridas d.akridas@gmail.com
 // Aristotelis Koligliatis aris7kol@yahoo.gr
-package gr.uth.inf.ce325.xml_parser;
 import java.lang.Object;
 import java.io.*;
 import java.lang.*;

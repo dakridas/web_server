@@ -1,8 +1,3 @@
-import gr.uth.inf.ce325.xml_parser.Document;
-import gr.uth.inf.ce325.xml_parser.DocumentBuilder;
-import gr.uth.inf.ce325.xml_parser.Attribute;
-import gr.uth.inf.ce325.xml_parser.Namespace;
-import gr.uth.inf.ce325.xml_parser.Node;
 import java.util.List;
 import java.io.*;
 
