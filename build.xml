@@ -6,14 +6,21 @@
 
     <target name="build">
         <mkdir dir="build/classes"/>
+        <mkdir dir="build/classes/root"/>
+        <delete file="build/classes/server.ser"/>
+        <copydir src="root" dest="build/classes/root"/>
+        <copy file="MIME.txt" todir="build/classes/"/>
+        <copy file="config.xml" todir="build/classes/"/>
+        <copy file="style.txt" todir="build/classes/"/>
         <javac srcdir="src" destdir="build/classes"/>
     </target>
 
     <target name="jar" depends="build">
         <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/ce325-web-server.jar" basedir="build/classes" includes="gr/uth/inf/ce325/xml_parser/**">
+        <jar destfile="build/jar/ce325-web-server.jar" basedir="build/classes" includes="gr/uth/inf/ce325/web_server/**">
         </jar>
     </target>
+
 
     <target name="all" depends="jar"/>
 

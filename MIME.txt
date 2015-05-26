@@ -1,0 +1,15 @@
+txt     text/plain
+jpg     image/jpeg
+png     image/png
+tiff    image/tiff
+bmp     image/bmp
+avi     video/x-msvideo
+mp4     video/mp4
+mp3     audio/mpeg
+ogg     audio/ogg
+pdf     application/pdf
+doc     application/msword
+xlc     application/excel
+ppt     application/powerpoint
+htm     text/html
+html    text/html

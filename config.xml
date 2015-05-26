@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ce325server>
+  <listen port="8000" />
+  <statistics port="8001" />
+  <log>
+    <access filepath="logAccess.txt" />
+    <error filepath="logError.txt" />
+  </log>
+  <documentroot filepath="root/" />
+</ce325server>
